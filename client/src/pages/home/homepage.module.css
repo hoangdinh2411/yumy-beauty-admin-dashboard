@@ -1,0 +1,22 @@
+.wrapper {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.appbar {
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  box-shadow: none;
+  height: 60px;
+}
+
+.content {
+  box-shadow: none;
+  flex:1;
+  overflow-y: auto;
+  padding: 20px;
+}
