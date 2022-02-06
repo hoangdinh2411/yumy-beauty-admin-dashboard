@@ -1,16 +1,17 @@
 .form{
     border-radius: 6px;
-    min-width: 350px;
-    padding: 30px;
+    width: 350px;
+    padding: 10px 20px;
     margin: auto;
     box-shadow: 0 5px 10px var(--text-color);
 }
 .heading{
     letter-spacing: 1px;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
 }
 .button{
     margin-bottom: 12px;
+    margin-top: 12px;
     display: flex;
     justify-content: space-around;
 }

@@ -10,7 +10,7 @@ function MessageBox({ show, messageFromServer }) {
     message = messageFromServer[type];
   }
 
-  if (!show) {
+  if (!show ) {
     return <></>;
   }
 
@@ -34,7 +34,7 @@ function MessageBox({ show, messageFromServer }) {
 
   return (
     <>
-      <div className={`${styles.box} ${show ? styles.active : ""}`}>
+      <div className={styles.box} style={show ? {display:'block'} : {display:'none'}}>
         <p className={styles.text}> {message}</p>
         <p
           className={`${styles.line} ${show ? styles.count : ""}`}

@@ -1,11 +1,14 @@
 .boxes{
-    position: relative;
     flex:1;
+    position: relative;
 }
+
+
 .icon{
     position: absolute;
     right:12px;
-    top:6px;
+    top:50%;
+    /* transform: translateY(-50%); */
     z-index: 10;
     cursor: pointer;
 
@@ -18,7 +21,7 @@
     align-items: center;
 }
 .title{
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     color: black;
     font-size: 18px;
     font-weight: 600;
@@ -41,10 +44,10 @@
 .input:focus{
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2) inset;
 }
-.input:valid ~.line,
-.input:focus ~.line{
+.input:valid ~.line{
     width: 100%;
 }
+
 .line{
     transition: width 0.2s linear;
     z-index: 10;
@@ -62,4 +65,10 @@
     color: rgba(0, 0, 0, 0.5);
     font-size: 16px;
 }
+.error{
+    color: red;
+    font-size: 12px;
+}
+
+
 

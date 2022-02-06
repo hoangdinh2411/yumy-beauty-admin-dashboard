@@ -1,6 +1,7 @@
-import authAPI from "api/authAPI";
+import authAPI from "api/axios/authAPI";
 import authActions from "./actions";
-import messageAction from "../message/actions";
+import { showSuccessMessageAlert, showErrorMessageAlert } from "utils/services";
+
 const authThunks = {
   signUp: (formData, navigate) => {
     return (dispatch) => {
@@ -8,15 +9,13 @@ const authThunks = {
         .adminSignUp(formData)
         .then((data) => {
           dispatch(authActions.signIn(data));
-          const message = { success: "Successfully" };
-          dispatch(messageAction.addMessage(message));
+          showSuccessMessageAlert("Sign Up", dispatch);
 
           navigate("/");
         })
         .catch((err) => {
           if (err.response && err.response.data) {
-            const errMessage = err.response.data.message;
-            dispatch(messageAction.addMessage(errMessage));
+            showErrorMessageAlert(err);
           }
         });
     };
@@ -26,18 +25,21 @@ const authThunks = {
       return authAPI
         .adminSignIn(formData)
         .then((data) => {
-          dispatch(authActions.signIn(data))
-          const message = { success: "Successfully" };
-          dispatch(messageAction.addMessage(message));
-          navigate('/')
+          dispatch(authActions.signIn(data));
+          showSuccessMessageAlert("Welcome back", dispatch);
+          navigate("/");
         })
         .catch((err) => {
           if (err.response && err.response.data) {
-            const errMessage = err.response.data.message;
-            dispatch(messageAction.addMessage(errMessage));
+            showErrorMessageAlert(err);
           }
         });
     };
+  },
+  signOut: (dispatch, navigate) => {
+    dispatch(authActions.signout());
+    showSuccessMessageAlert("See you again", dispatch);
+    navigate("/signin");
   },
 };
 

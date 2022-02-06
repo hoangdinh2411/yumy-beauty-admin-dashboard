@@ -1,45 +1,44 @@
 import { FaEyeSlash, FaEye } from "react-icons/fa";
-
 export const menuItems = [
   {
     id: 1,
     path: "/",
-    title: "dashboard",
+    title: "Dashboard",
   },
   {
     id: 2,
     path: "/services",
-    title: "services",
+    title: "Services",
   },
   {
     id: 3,
-    path: "/category",
-    title: "category",
+    path: "/categories",
+    title: "Categories",
   },
   {
     id: 4,
     path: "/customers",
-    title: "customers",
+    title: "Customers",
   },
   {
     id: 5,
     path: "/orders",
-    title: "orders",
+    title: "Orders",
   },
   {
     id: 6,
     path: "/coupons",
-    title: "coupons",
+    title: "Coupons",
   },
   {
     id: 7,
     path: "/staff",
-    title: "staff",
+    title: "Staff",
   },
   {
     id: 8,
     path: "/setting",
-    title: "setting",
+    title: "Setting",
   },
 ];
 
@@ -49,7 +48,8 @@ export const formFields = {
       id: 1,
       name: "username",
       type: "text",
-      placeholder: "Username",
+      title: "Username ",
+
     },
     {
       id: 2,
@@ -58,7 +58,7 @@ export const formFields = {
         hide: "password",
         show: "text",
       },
-      placeholder: "Password ",
+      title: "Password ",
       icon: {
         hide: <FaEyeSlash />,
         show: <FaEye />,
@@ -70,19 +70,19 @@ export const formFields = {
       id: 1,
       name: "fullName",
       type: "text",
-      placeholder: "Full name",
+      title: "Full name",
     },
     {
       id: 2,
       name: "username",
       type: "text",
-      placeholder: "Username",
+      title: "Username",
     },
     {
       id: 3,
       name: "email",
       type: "email",
-      placeholder: "Email",
+      title: "Email",
     },
     {
       id: 4,
@@ -91,7 +91,7 @@ export const formFields = {
         hide: "password",
         show: "text",
       },
-      placeholder: "Password ",
+      title: "Password ",
       icon: {
         hide: <FaEyeSlash />,
         show: <FaEye />,
@@ -101,40 +101,12 @@ export const formFields = {
       id: 5,
       name: "confirmPassword",
       type: "password",
-      placeholder: "Confirm password ",
+      title: "Confirm password ",
     },
   ],
+ 
 };
 
-export const selectByCategories = {
-  name: "services",
-  title: "Services",
-  options: [
-    {
-      id: 1,
-      value: "Pedicure",
-    },
-    {
-      id: 2,
-      value: "Manicure",
-    },
-    {
-      id: 3,
-      value: "Lash and Lift",
-    },
-  ],
-};
-export const selectByPrices = {
-  name: "price",
-  title: "Price",
-  options: [
-    {
-      id: 1,
-      value: "Hight to Low",
-    },
-    {
-      id: 2,
-      value: "Low to High",
-    },
-  ],
-};
+export const tableHeadersServices =["Image","Name","Categories","Price","Time to Up", "Staff", "Created by","","",""];
+export const tableHeadersCategories =["Name","Created by","Updated by","","",""]
+

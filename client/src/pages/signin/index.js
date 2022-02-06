@@ -4,24 +4,35 @@ import { Input, Button } from "components";
 import { formFields } from "constants";
 import authThunks from "store/user/authThunks";
 import { useDispatch } from "react-redux";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { getFieldError, getFormData } from "utils/services";
 
 function Signin() {
-  const [formData, setFormData] = useState({});
   const [isSignIn, setIsSignIn] = useState(true);
   const [showPass, setShowPass] = useState(false);
   const [sendEmail, setSendEmail] = useState(false);
-  const navigate = useNavigate()
+  const [wasSubmitted, setWasSubmitted] = useState(false);
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  // const handleChange = (e) => {
+  //   setValue({ ...formData, [e.target.name]: e.target.value });
+  // };
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isSignIn) {
-      dispatch(authThunks.signInByUserName(formData, navigate));
-    } else {
-      dispatch(authThunks.signUp(formData, navigate));
+    const formData = getFormData(e);
+
+    const formIsValid = Object.values(formData).every(
+      (value) => !getFieldError(value)
+    );
+    setWasSubmitted(true);
+    if (formIsValid) {
+      if (isSignIn) {
+        dispatch(authThunks.signInByUserName(formData, navigate));
+      } else {
+        dispatch(authThunks.signUp(formData, navigate));
+      }
+      e.currentTarget.reset()
     }
   };
 
@@ -31,7 +42,7 @@ function Signin() {
 
   const resetForm = () => {
     setShowPass(false);
-    setFormData({});
+   
   };
 
   const handleCancel = () => {
@@ -66,7 +77,7 @@ function Signin() {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={styles.form} onSubmit={handleSubmit} noValidate>
       <h1 className={styles.heading}>
         {sendEmail ? "Forget Pass" : isSignIn ? "Sign in" : "Sign up"}
       </h1>
@@ -76,13 +87,12 @@ function Signin() {
         (sendEmail && (
           <>
             <Input
-              sx={{ marginBottom: "16px" }}
-              value={formData.email}
-              underline
-              handleChange={handleChange}
+              wasSubmitted={wasSubmitted}
+              // value={formData.email}
               name="email"
               type="email"
-              placeholder="Email"
+              title="Email"
+              
             />
           </>
         )) ||
@@ -93,15 +103,14 @@ function Signin() {
               {formFields.signInForm.map((field) => {
                 return (
                   <Input
-                    sx={{ marginBottom: "16px" }}
-                    underline
+                    
+                    wasSubmitted={wasSubmitted}
                     id={field.name}
                     handleShowPass={
                       field.name === "password" ? handleShowPass : null
                     }
                     key={field.id}
-                    value={formData[field.name] || ""}
-                    handleChange={handleChange}
+                    // value={formData[field.name] || ""}
                     icon={
                       field.name === "password"
                         ? field.icon[showPass ? "show" : "hide"]
@@ -113,7 +122,7 @@ function Signin() {
                         ? field.type[showPass ? "show" : "hide"]
                         : field.type
                     }
-                    placeholder={field.placeholder}
+                    title={field.title}
                   />
                 );
               })}
@@ -123,15 +132,14 @@ function Signin() {
               {formFields.signUpForm.map((field) => {
                 return (
                   <Input
-                    sx={{ marginBottom: "16px" }}
-                    underline
+                    
+                    wasSubmitted={wasSubmitted}
                     id={field.name}
                     handleShowPass={
                       field.name === "password" ? handleShowPass : null
                     }
                     key={field.id}
-                    value={formData[field.name] || ""}
-                    handleChange={handleChange}
+                    // value={formData[field.name] || ""}
                     icon={
                       field.name === "password"
                         ? field.icon[showPass ? "show" : "hide"]
@@ -143,7 +151,7 @@ function Signin() {
                         ? field.type[showPass ? "show" : "hide"]
                         : field.type
                     }
-                    placeholder={field.placeholder}
+                    title={field.title}
                   />
                 );
               })}
@@ -151,7 +159,7 @@ function Signin() {
           )
       }
       <div className={styles.button}>
-        <Button handleClick={handleCancel}>
+        <Button handleClick={handleCancel} type="button">
           {sendEmail ? "Back " : "Reset"}
         </Button>
         <Button type="submit">

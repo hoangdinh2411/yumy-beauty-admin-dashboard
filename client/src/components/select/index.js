@@ -1,23 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
+import { getFieldError } from "utils/services";
 import styles from "./select.module.css";
-function Select({ options, handleChange }) {
+function Select({
+  value,
+  handleChange,
+  wasSubmitted,
+  options,
+  defaultValue,
+  showErrorMessage,
+  title,
+  sx,
+}) {
+  const [touched, setTouched] = useState(false);
+  const errorMessage = value === "" ? "Please choose a category" : null;
+  const displayErrorMessage = (wasSubmitted || touched) && errorMessage;
   return (
-    <>
+    <div style={sx} key={title}>
+      {showErrorMessage ? (
+        <p className={styles.title}>
+          {title}{" "}
+          {displayErrorMessage ? (
+            <span className={styles.error}>{`(* ${errorMessage})`}</span>
+          ) : null}
+        </p>
+      ) : null}
       <select
-        id={options.title}
+        value={value}
         onChange={(e) => handleChange(e)}
+        onBlur={() => setTouched(true)}
       >
-        <option className={styles.title} label={options.title} >
+        <option value="All" className={styles.default}>
+          {defaultValue}
         </option>
-        {options.options.map((option) => {
-          return (
-            <option key={option.id}  value={option.value}>
-              {option.value}
-            </option>
-          );
-        })}
+        {options.length > 0
+          ? options.map((option, index) => {
+              return (
+                <option key={index} value={option.value || option._id}>
+                  {option.name}
+                </option>
+              );
+            })
+          : null}
       </select>
-    </>
+    </div>
   );
 }
 

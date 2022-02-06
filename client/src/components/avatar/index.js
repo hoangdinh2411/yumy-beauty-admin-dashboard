@@ -3,9 +3,8 @@ import styles from "./avatar.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { FaSignOutAlt, FaEdit } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import authActions from "store/user/actions";
-import messageAction from "store/message/actions";
 import decode from "jwt-decode";
+import authThunks from "store/user/authThunks";
 
 function UserAvatar() {
   const dispatch = useDispatch();
@@ -14,7 +13,6 @@ function UserAvatar() {
     JSON.parse(localStorage.getItem("authInfo"))
   );
 
-
   //Kiem tra, neu token het han , thi se tu dong log out
   useEffect(() => {
     const token = user?.token;
@@ -22,25 +20,26 @@ function UserAvatar() {
       //ma hoa token
       const decodedToken = decode(token);
       if (decodedToken.exp * 1000 < new Date().getTime()) {
-        dispatch(authActions.signout());
-        dispatch(messageAction.addMessage("See you again"));
-        navigate("/signin");
+        dispatch(authThunks.signOut(dispatch, navigate));
       }
     }
     setUser(JSON.parse(localStorage.getItem("authInfo")));
+
+    return ()=>{}
   }, [navigate]);
 
-
-
   const handleSignOut = () => {
-    dispatch(authActions.signout());
-    dispatch(messageAction.addMessage({ info: "See you again" }));
-    navigate("/signin");
+    dispatch(authThunks.signOut(dispatch, navigate));
+
   };
   return (
     <div className={styles.wrapper}>
       {user.result?.avatarURL ? (
-        <img src={user.result?.avatarURL} className={styles.avatar} alt="Avatar" />
+        <img
+          src={user.result?.avatarURL}
+          className={styles.avatar}
+          alt="Avatar"
+        />
       ) : (
         <p className={styles.avatarByCharacter}>
           {user.result?.fullName.charAt(0).toUpperCase()}

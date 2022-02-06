@@ -4,17 +4,15 @@ import { menuItems } from "constants";
 import styles from "./navbar.module.css";
 import Button from "components/button";
 import { useDispatch } from 'react-redux';
-import authActions from 'store/user/actions'
-import messageAction from "store/message/actions";
+import authThunks from "store/user/authThunks";
 
 function Navbar() {
   const dispatch = useDispatch()
   const navigate = useNavigate();
   
   const handleSignOut =()=>{
-    dispatch(authActions.signout())
-    dispatch(messageAction.addMessage({info: 'See you again'}))
-    navigate('/signin')
+    dispatch(authThunks.signOut(dispatch, navigate));
+
   }
   return (
     <div className={`${styles.navbar} glass-blur`}>
@@ -27,7 +25,7 @@ function Navbar() {
         {menuItems.map((item) => {
           return (
             <li key={item.id} className={styles.items}>
-              <NavLink className={(({isActive})=>isActive? `${styles.itemLink} ${styles.active}` : styles.itemLink )} to={item.path}>
+              <NavLink state={item.title} className={(({isActive})=>isActive? `${styles.itemLink} ${styles.active}` : styles.itemLink )} to={item.path}>
                 {item.title}
               </NavLink>
             </li> 

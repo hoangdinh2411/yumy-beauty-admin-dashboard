@@ -1,0 +1,27 @@
+.text {
+  padding: 6px 12px;
+}
+
+.image {
+  display: block;
+  height: 40px;
+  object-fit: cover;
+  width: 40px;
+  margin: auto;
+}
+.items {
+  font-size: 16px;
+  height: 50px;
+  padding: 6px 6px;
+}
+
+.staffs {
+  text-decoration: underline;
+}
+.button {
+    font-weight: bold;
+    font-size: 20px;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 0 6px;
+  }

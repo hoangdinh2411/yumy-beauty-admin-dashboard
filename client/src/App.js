@@ -14,7 +14,7 @@ function App() {
   const dispatch = useDispatch()
   //check if user is logged in
   useEffect(() => {
-    if (authInStorage) {
+    if (authInStorage?.token) {
       navigate("/");
     } else {
       navigate("/signin");
@@ -31,9 +31,10 @@ function App() {
 
     const timeout = setTimeout(()=>{
       setShowMessageBox(false)
-    },2000)
+    },1500)
     return ()=>{
       clearTimeout(timeout)
+      
     }
   
   }, [messageFromServer]);
