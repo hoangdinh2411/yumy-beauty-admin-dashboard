@@ -1,5 +1,5 @@
 .container {
-  width: 100%;
+  width: 1050px;
   overflow: auto;
   height: 350px;
   border: 2px solid rgba(0, 0, 0, 0.2);
@@ -7,27 +7,25 @@
   padding-bottom: 12px;
 }
 .table {
-  width: 100%;
+  overflow: auto;
   border-collapse: collapse;
 }
 
 .header {
   height: 40px;
-  font-weight: 600;
   background-color: var(--text-color);
   color: white;
   text-transform: uppercase;
   text-align: left;
   letter-spacing: 0.5px;
 }
+
 .text {
-  padding: 6px 12px;
+  min-width: 120px;
+  padding: 6px ;
 }
 
 
-::-webkit-scrollbar {
-  display: none;  
-}
 
 
 .content:nth-child(even) {

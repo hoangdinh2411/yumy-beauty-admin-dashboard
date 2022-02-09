@@ -108,5 +108,6 @@ export const formFields = {
 };
 
 export const tableHeadersServices =["Image","Name","Categories","Price","Time to Up", "Staff", "Created by","","",""];
+export const tableHeadersCoupons =["Id","Campaign's Name","Code","Percentage","Start date", "End Date", "Created by","Expired","",""];
 export const tableHeadersCategories =["Name","Created by","Updated by","","",""]
 

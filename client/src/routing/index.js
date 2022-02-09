@@ -7,6 +7,7 @@ const HomeLayout = lazy(() => import("pages/home/homeLayout"));
 const Dashboard = lazy(() => import("containers/dashboard"));
 const Services = lazy(() => import("containers/services"));
 const Categories = lazy(() => import("containers/categories"));
+const Coupons = lazy(() => import("containers/coupons"));
 
 function Routing() {
   return (
@@ -20,6 +21,7 @@ function Routing() {
             <Route path="categories" element={<Categories />}>
               <Route path=":categoryId" element={<h1>Info Category</h1>} />
             </Route>
+            <Route path="coupons" element={<Coupons />}/>
             <Route path="*" element={<h1>There is nothing here</h1>} />
           </Route>
         <Route path="/signin" element={<Signin />} />

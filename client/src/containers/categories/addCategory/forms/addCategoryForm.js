@@ -23,6 +23,8 @@ function AddCategoryForm({
   const [wasSubmitted, setWasSubmitted] = useState(false);
   const { handleCloseModal } = useModal();
   const dispatch = useDispatch();
+
+  //Handle submit 
   const handleSubmit = (e) => {
     e.preventDefault();
     const { name } = getFormData(e);

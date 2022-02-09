@@ -15,10 +15,11 @@ function AddCategory({ auth, categories, currentCategory }) {
   const [searchValue, setSearchValue] = useState("");
   const [filterByCategory, setFilterByCategory] = useState("All");
   const { handleShowModal, handleCloseModal } = useModal();
-  const handleSearchText = useCallback((e) => {
+
+  const handleSearchText = (e) => {
     setSearchValue(e.target.value);
     dispatch(filterActions.search(e.target.value));
-  }, []);
+  };
 
   const handleFilterByCategory = useCallback((e) => {
     setFilterByCategory(e.target.value);
@@ -57,8 +58,11 @@ function AddCategory({ auth, categories, currentCategory }) {
       />
       <Button
         sx={{ marginRight: "12px" }}
-        
-        handleClick={() => handleShowModal(<AddCategoryForm categories={categories} auth={auth} />)}
+        handleClick={() =>
+          handleShowModal(
+            <AddCategoryForm categories={categories} auth={auth} />
+          )
+        }
       >
         Add Category
       </Button>

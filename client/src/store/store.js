@@ -7,6 +7,7 @@ import authReducer from 'store/user/reducer'
 import servicesReducer from 'store/services/reducer'
 import messageReducer from 'store/message/reducer'
 import categoriesReducer from 'store/categories/reducer'
+import couponReducers  from 'store/coupons/reducer'
 import serviceFilterReducer from 'store/filter/reducers'
 
 const rootReducers =combineReducers({
@@ -14,6 +15,7 @@ const rootReducers =combineReducers({
     message: messageReducer,
     services: servicesReducer,
     categories: categoriesReducer,
+    coupons: couponReducers,
     serviceFilter : serviceFilterReducer
 })
 

@@ -7,7 +7,7 @@ import { useSelector,useDispatch } from "react-redux";
 import  messageAction  from 'store/message/actions'
 
 function App() {
-  const authInStorage = JSON.parse(localStorage.getItem("authInfo"));
+  const authInStorage = JSON.parse(localStorage.getItem("authInfo")) ;
   const navigate = useNavigate();
   const messageFromServer = useSelector((state) => state.message);
   const [showMessageBox, setShowMessageBox] = useState(false)
@@ -19,6 +19,8 @@ function App() {
     } else {
       navigate("/signin");
     }
+
+
   }, []);
   
 

@@ -7,6 +7,7 @@ import dotenv from 'dotenv'
 import userRouter from './route/user.js'
 import serviceRoute from './route/service.js'
 import categoryRoute from './route/category.js'
+import couponsRoute from './route/coupons.js'
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(cors());
 app.use('/users', userRouter)
 app.use('/services', serviceRoute)
 app.use('/category', categoryRoute)
+app.use('/coupons', couponsRoute)
 
 const PORT = process.env.PORT || 5001;
 
