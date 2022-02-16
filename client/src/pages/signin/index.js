@@ -6,6 +6,7 @@ import authThunks from "store/user/authThunks";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getFieldError, getFormData } from "utils/services";
+import { showErrorMessageAlert } from "utils/services";
 
 function Signin() {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -32,7 +33,8 @@ function Signin() {
       } else {
         dispatch(authThunks.signUp(formData, navigate));
       }
-      e.currentTarget.reset()
+    } else {
+      showErrorMessageAlert("Please fill out all fields", dispatch);
     }
   };
 
@@ -42,7 +44,6 @@ function Signin() {
 
   const resetForm = () => {
     setShowPass(false);
-   
   };
 
   const handleCancel = () => {
@@ -77,106 +78,107 @@ function Signin() {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit} noValidate>
-      <h1 className={styles.heading}>
-        {sendEmail ? "Forget Pass" : isSignIn ? "Sign in" : "Sign up"}
-      </h1>
+    <div className={styles.wrapper}>
+      <form className={styles.form} onSubmit={handleSubmit} noValidate>
+        <h1 className={styles.heading}>
+          {sendEmail ? "Forget Pass" : isSignIn ? "Sign in" : "Sign up"}
+        </h1>
 
-      {
-        //If user click forgot pass, show send email form
-        (sendEmail && (
-          <>
-            <Input
-              wasSubmitted={wasSubmitted}
-              // value={formData.email}
-              name="email"
-              type="email"
-              title="Email"
-              
-            />
-          </>
-        )) ||
-          //or come back sign in form
-          //Change between sign in and sign up form
-          (isSignIn && (
+        {
+          //If user click forgot pass, show send email form
+          // complete later *************
+          (sendEmail && (
             <>
-              {formFields.signInForm.map((field) => {
-                return (
-                  <Input
-                    
-                    wasSubmitted={wasSubmitted}
-                    id={field.name}
-                    handleShowPass={
-                      field.name === "password" ? handleShowPass : null
-                    }
-                    key={field.id}
-                    // value={formData[field.name] || ""}
-                    icon={
-                      field.name === "password"
-                        ? field.icon[showPass ? "show" : "hide"]
-                        : null
-                    }
-                    name={field.name}
-                    type={
-                      field.name === "password"
-                        ? field.type[showPass ? "show" : "hide"]
-                        : field.type
-                    }
-                    title={field.title}
-                  />
-                );
-              })}
+              <Input
+                wasSubmitted={wasSubmitted}
+                // value={formData.email}
+                name="email"
+                type="email"
+                title="Email"
+              />
             </>
-          )) || (
-            <>
-              {formFields.signUpForm.map((field) => {
-                return (
-                  <Input
-                    
-                    wasSubmitted={wasSubmitted}
-                    id={field.name}
-                    handleShowPass={
-                      field.name === "password" ? handleShowPass : null
-                    }
-                    key={field.id}
-                    // value={formData[field.name] || ""}
-                    icon={
-                      field.name === "password"
-                        ? field.icon[showPass ? "show" : "hide"]
-                        : null
-                    }
-                    name={field.name}
-                    type={
-                      field.name === "password"
-                        ? field.type[showPass ? "show" : "hide"]
-                        : field.type
-                    }
-                    title={field.title}
-                  />
-                );
-              })}
-            </>
-          )
-      }
-      <div className={styles.button}>
-        <Button handleClick={handleCancel} type="button">
-          {sendEmail ? "Back " : "Reset"}
-        </Button>
-        <Button type="submit">
-          {sendEmail ? "Send" : isSignIn ? "Sign In" : "Register"}
-        </Button>
-      </div>
-      <p className={styles.changeForm} onClick={handleSwitchForm}>
-        {isSignIn || sendEmail
-          ? "Don't have account? Register here "
-          : "Already have a account? Sign in now"}
-      </p>
-      <p className={styles.resetPassword} onClick={handleResetPass}>
-        {!sendEmail
-          ? " Forget password"
-          : "Already have a account? Sign in now"}
-      </p>
-    </form>
+          )) ||
+            //or come back sign in form
+            //Change between sign in and sign up form
+            (isSignIn && (
+              <>
+                {formFields.signInForm.map((field) => {
+                  return (
+                    <Input
+                      value={field.defaultValue}
+                      wasSubmitted={wasSubmitted}
+                      id={field.name}
+                      handleShowPass={
+                        field.name === "password" ? handleShowPass : null
+                      }
+                      key={field.id}
+                      // value={formData[field.name] || ""}
+                      icon={
+                        field.name === "password"
+                          ? field.icon[showPass ? "show" : "hide"]
+                          : null
+                      }
+                      name={field.name}
+                      type={
+                        field.name === "password"
+                          ? field.type[showPass ? "show" : "hide"]
+                          : field.type
+                      }
+                      title={field.title}
+                    />
+                  );
+                })}
+              </>
+            )) || (
+              <>
+                {formFields.signUpForm.map((field) => {
+                  return (
+                    <Input
+                      wasSubmitted={wasSubmitted}
+                      id={field.name}
+                      handleShowPass={
+                        field.name === "password" ? handleShowPass : null
+                      }
+                      key={field.id}
+                      // value={formData[field.name] || ""}
+                      icon={
+                        field.name === "password"
+                          ? field.icon[showPass ? "show" : "hide"]
+                          : null
+                      }
+                      name={field.name}
+                      type={
+                        field.name === "password"
+                          ? field.type[showPass ? "show" : "hide"]
+                          : field.type
+                      }
+                      title={field.title}
+                    />
+                  );
+                })}
+              </>
+            )
+        }
+        <div className={styles.button}>
+          <Button handleClick={handleCancel} type="button">
+            {sendEmail ? "Back " : "Reset"}
+          </Button>
+          <Button type="submit">
+            {sendEmail ? "Send" : isSignIn ? "Sign In" : "Register"}
+          </Button>
+        </div>
+        <p className={styles.changeForm} onClick={handleSwitchForm}>
+          {isSignIn || sendEmail
+            ? "Don't have account? Register here "
+            : "Already have a account? Sign in now"}
+        </p>
+        <p className={styles.resetPassword} onClick={handleResetPass}>
+          {!sendEmail
+            ? " Forget password"
+            : "Already have a account? Sign in now"}
+        </p>
+      </form>
+    </div>
   );
 }
 

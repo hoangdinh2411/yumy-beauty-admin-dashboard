@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Button, Select, Input } from "components";
-import styles from "./addCategory.module.css";
 import useModal from "hooks/modalHook";
 import AddCategoryForm from "./forms/addCategoryForm";
 import { useDispatch } from "react-redux";
 import filterActions from "store/filter/actions";
-import useCategoriesContext from "hooks/categoriesHook copy";
+import useCategoriesContext from "hooks/categoriesHook";
 
 const selectStyle = { width: "160px", margin: "12px" };
 function AddCategory({ auth, categories, currentCategory }) {
@@ -40,7 +39,7 @@ function AddCategory({ auth, categories, currentCategory }) {
     return () => {};
   }, [currentCategoriesId]);
   return (
-    <div className={styles.form}>
+    <div className="searchBar">
       <Input
         value={searchValue}
         handleChange={handleSearchText}

@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FileBase from "react-file-base64";
 
-import { Input, Button, Select } from "components";
+import { Input, Button, Select, TreeSelect } from "components";
 import styles from "./form.module.css";
 import { FaPlusCircle } from "react-icons/fa";
 import useModal from "hooks/modalHook";
 import servicesThunks from "store/services/servicesThunks";
-import { getFormData, showErrorMessageAlert } from "utils/services";
+import {
+  getFormData,
+  showErrorMessageAlert,
+  getFieldError,
+} from "utils/services";
 
 const styleForInput = { marginBottom: "20px", width: "100%" };
 function AddServiceForm({
@@ -20,43 +24,74 @@ function AddServiceForm({
   const dispatch = useDispatch();
   const { handleCloseModal } = useModal();
   const services = useSelector((state) => state.services);
+  const staffs = useSelector((state) => state.staffs);
   const [wasSubmitted, setWasSubmitted] = useState(false);
+
+  //select Category
   const [selectedValue, setSelectedValue] = useState(
     currentServiceId ? currentService["category"] : ""
   );
+
+  // Select staff for service
+  const [selectedStaff, setSelectedStaff] = useState("");
+
+  //select file anh and convert to base 64
   const [selectedFile, setSelectedFile] = useState(
     currentServiceId ? currentService["selectedFile"] : ""
   );
 
+  //push all selected staffs into an array 
+  const [selectedStaffs, setSelectedStaffs] = useState(
+    currentServiceId ? currentService["staffs"] : []
+  );
+
+  //functions
+  const handleSelectCategory = (e) => {
+    setSelectedValue(e.target.value);
+  };
+
+  const handleDeleteSelectedStaffs = (id) => {
+    setSelectedStaffs(selectedStaffs.filter((category) => category !== id));
+  };
+  const handleSelectStaff = (e) => {
+    setSelectedStaff(e.target.value);
+    if (!selectedStaffs.includes(e.target.value) && e.target.value !=='All') {
+      setSelectedStaffs([...selectedStaffs, e.target.value]);
+    }
+  };
+
+  const handleSelectFile = ({ base64 }) => {
+    setSelectedFile(base64);
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     // Neu trung category, thi check co trung ten service ko? neu k thi cho add
-    const { name, price, timeTake, staffs, description } = getFormData(e);
-
+    const formData = getFormData(e);
+    const { name } = formData;
     let formIsValid = false;
-    if (currentService) {
-      formIsValid = true;
-    } else {
-      formIsValid = services.every((service) => {
-        if (service.category === selectedValue) {
-          if (service.name === name) {
-            return false;
+    if (Object.values(formData).every((value) => !getFieldError(value))) {
+      if (currentService) {
+        formIsValid = true;
+      } else {
+        formIsValid = services?.every((service) => {
+          if (service.category === selectedValue) {
+            if (service.name === name) {
+              return false;
+            }
           }
-        }
-        return true;
-      });
+          return true;
+        });
+      }
     }
 
     setWasSubmitted(true);
     if (formIsValid) {
       const serviceData = {
+        ...formData,
         name,
-        price,
-        staffs: staffs.split(","),
-        timeTake,
+        staffs: selectedStaffs,
         selectedFile,
         category: selectedValue,
-        description
       };
       if (currentServiceId) {
         dispatch(
@@ -73,28 +108,20 @@ function AddServiceForm({
             createdBy: auth?.result?.fullName,
           })
         );
-        e.currentTarget.reset();
-        setSelectedValue("");
-        setSelectedFile("");
-        setWasSubmitted(false);
       }
-    
+      e.currentTarget.reset();
+      setSelectedValue("");
+      setSelectedFile("");
+      setSelectedStaffs([])
+      setWasSubmitted(false);
     } else {
       showErrorMessageAlert(
         currentServiceId
           ? "Change something if you want"
-          : "Service already exist",
+          : "Please fill out all fields",
         dispatch
       );
     }
-  };
-
-  const handleChange = (e) => {
-    setSelectedValue(e.target.value);
-  };
-
-  const handleSelectFile = ({ base64 }) => {
-    setSelectedFile(base64);
   };
 
   return (
@@ -104,7 +131,7 @@ function AddServiceForm({
         <div className={styles.inputs}>
           <form noValidate onSubmit={handleSubmit}>
             <Input
-              value={currentServiceId ? currentService["name"] : ""}
+              value={currentServiceId ? currentService["name"] : undefined}
               wasSubmitted={wasSubmitted}
               title="Name"
               type="text"
@@ -113,7 +140,7 @@ function AddServiceForm({
               sx={styleForInput}
             />
             <Input
-              value={currentServiceId ? currentService["price"] : ""}
+              value={currentServiceId ? currentService["price"] : undefined}
               wasSubmitted={wasSubmitted}
               title="Price"
               type="text"
@@ -122,7 +149,7 @@ function AddServiceForm({
               sx={styleForInput}
             />
             <Input
-              value={currentServiceId ? currentService["timeTake"] : ""}
+              value={currentServiceId ? currentService["timeTake"] : undefined}
               wasSubmitted={wasSubmitted}
               showErrorMessage
               title="Time up to"
@@ -130,27 +157,36 @@ function AddServiceForm({
               name="timeTake"
               sx={styleForInput}
             />
-            <Input
-              value={currentServiceId ? currentService["staffs"] : ""}
+            <Select
+              options={staffs}
               wasSubmitted={wasSubmitted}
               showErrorMessage
-              title="Staff *(separate with a ',' example:  John,Kevin)"
-              type="text"
-              name="staffs"
+              defaultValue="Choose staff"
+              title="Staffs"
               sx={styleForInput}
+              handleChange={handleSelectStaff}
+              value={selectedStaff}
             />
+            <TreeSelect
+              options={staffs}
+              selected={selectedStaffs}
+              handleDeleteOption={handleDeleteSelectedStaffs}
+            />
+
             <Select
               wasSubmitted={wasSubmitted}
               options={categories}
               defaultValue="Category"
               title="Category"
               showErrorMessage
-              handleChange={handleChange}
+              handleChange={handleSelectCategory}
               value={selectedValue}
               sx={styleForInput}
             />
             <Input
-              value={currentServiceId ? currentService["description"] : ""}
+              value={
+                currentServiceId ? currentService["description"] : undefined
+              }
               wasSubmitted={wasSubmitted}
               showErrorMessage
               title="Description"

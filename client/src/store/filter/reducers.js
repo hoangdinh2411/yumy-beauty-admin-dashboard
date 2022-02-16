@@ -4,7 +4,7 @@ const initialState = {
   category: "All",
   priceFrom: "All",
 };
-const serviceFilterReducer = (state = initialState, { type, payload }) => {
+const filterReducer = (state = initialState, { type, payload }) => {
     switch (type) {
         case actionTypes.SEARCH_BY_TEXT:
             return {
@@ -29,4 +29,4 @@ const serviceFilterReducer = (state = initialState, { type, payload }) => {
 
 };
 
-export default serviceFilterReducer
+export default filterReducer

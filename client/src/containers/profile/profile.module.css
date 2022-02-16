@@ -1,0 +1,22 @@
+.avatarContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.avatar{
+    
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+    object-fit: cover;
+    background-color: lightsalmon;
+}
+
+.buttons{
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}

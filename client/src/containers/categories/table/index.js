@@ -1,36 +1,33 @@
 import React from "react";
-import styles from "./table.module.css";
 import { tableHeadersCategories } from "constants";
 import Column from "./column";
-function CategoriesTable({ categoriesFilter}) {
-
+function CategoriesTable({ categoriesFilter }) {
   return (
-    <div className={styles.container}>
-      <table className={styles.table}>
-        <thead className={styles.header}>
-          <tr>
-            {tableHeadersCategories.map((item,index) => {
-              return (
-                <th key={index} className={styles.text}>
-                  {item}
-                </th>
-              );
-            })}
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {categoriesFilter?.map((item) => {
+    <table className="table">
+      <thead className="table__header">
+        <tr>
+          {tableHeadersCategories.map((item, index) => {
             return (
-              <tr key={item._id} className={styles.content}>
-                <Column  item={item}/>
-              </tr>
+              <th key={index} className="table__text">
+                {item}
+              </th>
             );
           })}
-        </tbody>
-      </table>
-    </div>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {categoriesFilter?.map((item) => {
+          return (
+            <tr key={item._id} className="table__content">
+              <Column item={item} />
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 }
 

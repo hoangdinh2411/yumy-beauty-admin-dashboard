@@ -9,7 +9,15 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <GlobalStyles>
-        <BrowserRouter>
+        <BrowserRouter
+          getUserConfirmation={(message, callback) => {
+            console.log("open modal here!");
+            const allowTransition = window.confirm(message);
+            window.setTimeout(() => {
+              callback(allowTransition);
+            }, 1000);
+          }}
+        >
           <App />
         </BrowserRouter>
       </GlobalStyles>

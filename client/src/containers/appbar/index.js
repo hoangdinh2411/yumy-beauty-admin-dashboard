@@ -5,7 +5,7 @@ function Appbar() {
   
 
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper}`}>
       <Notification/>
       <UserAvatar />
     </div>

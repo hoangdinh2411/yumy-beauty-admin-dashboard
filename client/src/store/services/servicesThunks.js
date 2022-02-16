@@ -35,9 +35,9 @@ const servicesThunks = {
     return (dispatch) => {
       return servicesAPI
         .delete(id)
-        .then(() => {
+        .then((message) => {
           dispatch(servicesActions.delete(id));
-          showSuccessMessageAlert("Delete success", dispatch);
+          showSuccessMessageAlert(message, dispatch);
         })
         .catch((err) => {
           showErrorMessageAlert(err, dispatch);
@@ -48,9 +48,9 @@ const servicesThunks = {
     return (dispatch) => {
       return servicesAPI
         .update(id, newData)
-        .then(() => {
+        .then((message) => {
           dispatch(servicesActions.update(id, newData));
-          showSuccessMessageAlert("Update success", dispatch);
+          showSuccessMessageAlert(message, dispatch);
         })
         .catch((err) => {
           showErrorMessageAlert(err, dispatch);

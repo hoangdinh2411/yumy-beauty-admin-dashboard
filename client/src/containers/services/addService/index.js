@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Button, Select, Input } from "components";
-import styles from "./addService.module.css";
+
 import useModal from "hooks/modalHook";
 import AddServiceForm from "./forms/addServiceForm";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,12 +10,12 @@ const selectByPrices = [
   {
     id: 1,
     name: "Hight to Low",
-    value: "Hight",
+    value: "Hight to Low",
   },
   {
     id: 2,
     name: "Low to High",
-    value: "Low",
+    value: "Low to High",
   },
 ];
 
@@ -60,8 +60,10 @@ function AddService({ auth, currentService }) {
     }
     return () => {};
   }, [currentService]);
+
+  
   return (
-    <div className={styles.form}>
+    <div className="searchBar">
       <Input
         value={searchValue}
         handleChange={handleSearchText}

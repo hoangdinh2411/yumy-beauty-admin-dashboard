@@ -14,7 +14,7 @@ const categoryThunks = {
           showSuccessMessageAlert("Create category success", dispatch);
         })
         .catch((err) => {
-          showErrorMessageAlert(err);
+          showErrorMessageAlert(err,dispatch);
         });
     };
   },
@@ -30,7 +30,7 @@ const categoryThunks = {
           return;
         })
         .catch((err) => {
-          showErrorMessageAlert(err);
+          showErrorMessageAlert(err,dispatch);
         });
     };
   },
@@ -39,9 +39,9 @@ const categoryThunks = {
     return (dispatch) => {
       return categoryAPI
         .update(id, newData)
-        .then(() => {
+        .then((message) => {
           dispatch(categoryActions.updateCategory(id, newData));
-          showSuccessMessageAlert("Update success", dispatch);
+          showSuccessMessageAlert(message, dispatch);
         })
         .catch((err) => {
           showErrorMessageAlert(err, dispatch);
@@ -51,13 +51,13 @@ const categoryThunks = {
   delete : (id)=>{
     return (dispatch) => {
       return categoryAPI.delete(id)
-        .then(()=>{
+        .then((message)=>{
           dispatch(categoryActions.deleteCategory(id));
           dispatch(servicesActions.deleteByCategory(id))
-          showSuccessMessageAlert("Delete category success", dispatch);
+          showSuccessMessageAlert(message, dispatch);
         })
         .catch((err) => {
-          showErrorMessageAlert(err);
+          showErrorMessageAlert(err,dispatch);
         });
     }
   }

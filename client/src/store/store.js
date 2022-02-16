@@ -8,7 +8,8 @@ import servicesReducer from 'store/services/reducer'
 import messageReducer from 'store/message/reducer'
 import categoriesReducer from 'store/categories/reducer'
 import couponReducers  from 'store/coupons/reducer'
-import serviceFilterReducer from 'store/filter/reducers'
+import staffsReducer  from 'store/staffs/reducer'
+import filterReducer from 'store/filter/reducers'
 
 const rootReducers =combineReducers({
     auth: authReducer,
@@ -16,7 +17,8 @@ const rootReducers =combineReducers({
     services: servicesReducer,
     categories: categoriesReducer,
     coupons: couponReducers,
-    serviceFilter : serviceFilterReducer
+    staffs: staffsReducer,
+    filter : filterReducer
 })
 
 const store = createStore(rootReducers ,composeWithDevTools(applyMiddleware(thunk)) )

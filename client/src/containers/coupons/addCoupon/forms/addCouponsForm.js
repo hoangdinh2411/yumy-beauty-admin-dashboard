@@ -7,31 +7,43 @@ import { Input, Button } from "components";
 import styles from "./form.module.css";
 import { FaPlusCircle } from "react-icons/fa";
 import useModal from "hooks/modalHook";
-import { createIDForCoupon, getFormData, showErrorMessageAlert } from "utils/services";
+import {
+  createCodeForCoupon,
+  getFieldError,
+  getFormData,
+  showErrorMessageAlert,
+} from "utils/services";
 import couponThunks from "store/coupons/couponThunks";
+
 const styleForInput = { marginBottom: "20px", width: "100%" };
 const today = new Date();
 
-function AddCouponsForm({ auth }) {
+function AddCouponsForm({ auth, currentCouponId, currentCoupon }) {
   const dispatch = useDispatch();
+  const coupons = useSelector((state) => state.coupons);
+
   const { handleCloseModal } = useModal();
   const [wasSubmitted, setWasSubmitted] = useState(false);
-  const [campaignStartTime, setCampaignStartTime] = useState(today);
-  const [campaignEndTime, setCampaignEndTime] = useState(today);
+  const [campaignStartTime, setCampaignStartTime] = useState(
+    currentCouponId ? new Date(currentCoupon.startDate) : today
+  );
+  const [campaignEndTime, setCampaignEndTime] = useState(
+    currentCouponId ? new Date(currentCoupon.endDate) : today
+  );
   const [dateError, setDateError] = useState("");
   //to show date
   // console.log(campaignStartTime.toDateString())
   useEffect(() => {
     let dateIsValid = true;
+    // start date nho hon ngay hien tai = false
+    // Neu month = nhau, thi check ngay co = nhau ko?
     if (campaignStartTime.getTime() < today.getTime()) {
       setDateError("Don't select old dates");
       dateIsValid = false;
     } else {
-      if (campaignEndTime.getMonth() === campaignStartTime.getMonth()) {
-        if (campaignEndTime.getDay() <= campaignStartTime.getDay()) {
-          setDateError("The end date not be older or the same start day");
-          dateIsValid = false;
-        }
+      if (campaignEndTime.getTime() <= campaignStartTime.getTime()) {
+        setDateError("The end date not be older or the same start day");
+        dateIsValid = false;
       }
     }
     if (dateIsValid) {
@@ -41,52 +53,60 @@ function AddCouponsForm({ auth }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Neu trung category, thi check co trung ten service ko? neu k thi cho add
-    const { name, code, percentage } = getFormData(e);
 
-    let formIsValid = dateError === "";
-    // if (currentService) {
-    //   formIsValid = true;
-    // } else {
-    //   formIsValid = services.every((service) => {
-    //     if (service.category === selectedValue) {
-    //       if (service.name === name) {
-    //         return false;
-    //       }
-    //     }
-    //     return true;
-    //   });
-    // }
-    
+    const formData = getFormData(e);
+    const code = createCodeForCoupon(
+      formData.name,
+      campaignStartTime,
+      formData.percentage
+    );
+    // const existingCoupon = coupons?.every(
+    //   (coupon) => coupon.name !== formData.name && coupon.code !== code
+    // );
+
+    let formIsValid = !currentCouponId
+      ? Object.values(formData).every((value) => !getFieldError(value))
+      : true;
     setWasSubmitted(true);
     if (formIsValid) {
       const couponData = {
-        id : createIDForCoupon(name,code,percentage),
-        name,
+        ...formData,
         code,
-        percentage,
         startDate: campaignStartTime.toDateString(),
         endDate: campaignEndTime.toDateString(),
-        createdBy: auth?.result.fullName
       };
-      dispatch(couponThunks.createNew(couponData))
-      e.currentTarget.reset()
+      if (currentCouponId) {
+        dispatch(
+          couponThunks.update(currentCouponId, {
+            ...couponData,
+            updatedBy: auth?.result.fullName,
+          })
+        );
+      } else {
+        dispatch(
+          couponThunks.createNew({
+            ...couponData,
+            createdBy: auth?.result.fullName,
+          })
+        );
+      }
+      e.currentTarget.reset();
       setWasSubmitted(false);
-      setCampaignStartTime(today)
-      setCampaignEndTime(today)
-      handleCloseModal()
     } else {
-      showErrorMessageAlert("Coupon already exist", dispatch);
+      showErrorMessageAlert(
+        currentCouponId
+          ? "Change something that you want"
+          : "Please fill out all fields",
+        dispatch
+      );
     }
-
-  
   };
 
   return (
     <form noValidate onSubmit={handleSubmit} className={styles.createCoupon}>
-      <h1 className={styles.heading}>Add new service </h1>
+      <h1 className={styles.heading}>Add new coupon </h1>
       <Input
-        value=""
+        value={currentCouponId ? currentCoupon?.name : undefined}
         wasSubmitted={wasSubmitted}
         title="Name"
         type="text"
@@ -94,18 +114,9 @@ function AddCouponsForm({ auth }) {
         name="name"
         sx={styleForInput}
       />
+
       <Input
-        value=""
-        wasSubmitted={wasSubmitted}
-        title="Code"
-        type="text"
-        showErrorMessage
-        name="code"
-        sx={styleForInput}
-        placeholder="Month + year / Name + year"
-      />
-      <Input
-        value=""
+        value={currentCouponId ? currentCoupon?.percentage : undefined}
         wasSubmitted={wasSubmitted}
         showErrorMessage
         title="Percentage"
@@ -140,8 +151,7 @@ function AddCouponsForm({ auth }) {
         </Button>
         <Button type="submit">
           <FaPlusCircle />
-          Add new
-          {/* {currentServiceId ? "Update" : "Add new"} */}
+          {currentCouponId ? "Update" : "Add new"}
         </Button>
       </div>
     </form>

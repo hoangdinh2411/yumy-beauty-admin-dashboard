@@ -1,7 +1,6 @@
-import useCategoriesContext from "hooks/categoriesHook copy";
+import useCategoriesContext from "hooks/categoriesHook";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import styles from "./column.module.css";
 import categoryThunks  from 'store/categories/categoryThunks';
 
 function Column({ item }) {
@@ -19,18 +18,18 @@ function Column({ item }) {
   };
   return (
     <>
-      <td className={styles.items}>
-        <span className={styles.text}>{item.name}</span>
+      <td className="table__column--items">
+        <span className="table__column--text ">{item.name}</span>
       </td>
-      <td className={styles.items}>
-        <span className={styles.text}>{item.createdBy}</span>
+      <td className="table__column--items">
+        <span className="table__column--text ">{item.createdBy}</span>
       </td>
-      <td className={styles.items}>
-        <span className={styles.text}>{item.updatedBy || "No"}</span>
+      <td className="table__column--items">
+        <span className="table__column--text ">{item.updatedBy || "No"}</span>
       </td>
       <td>
         <span
-          className={styles.button}
+          className="table__column--button"
           title="Edit Category"
           data-id={item._id}
           onClick={handleEditCategory}
@@ -40,7 +39,7 @@ function Column({ item }) {
       </td>
       <td>
         <span
-          className={styles.button}
+          className="table__column--button"
           title="Delete category"
           data-id={item._id}
           onClick={handleDeleteCategory}
@@ -51,7 +50,7 @@ function Column({ item }) {
       <td>
         <Link
           to={`/categories/${item._id}`}
-          className={styles.button}
+          className="table__column--button"
           title="Info about the category"
         >
           Info

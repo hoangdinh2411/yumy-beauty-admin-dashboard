@@ -33,10 +33,10 @@ function Select({
           {defaultValue}
         </option>
         {options.length > 0
-          ? options.map((option, index) => {
+          ? options.map((option) => {
               return (
-                <option key={index} value={option.value || option._id}>
-                  {option.name}
+                <option key={option._id} value={option._id}>
+                  {option.name || option.fullName}
                 </option>
               );
             })

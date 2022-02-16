@@ -1,13 +1,12 @@
 .grid{
-    width: 100%;
+    max-width: 100%;
+    
     padding: 0 ;
-
 }
 
 .wide{
-    max-width: 1200px;
+    width:100%;
     margin: 0 auto;
-
 }
 
 /* Mobile */
@@ -123,10 +122,10 @@
 
 /* Tablet - PC low resolution */
 @media (min-width: 740px) and (max-width:1023px) {
-    .wide{
+    /* .wide{
         width: 644px;
     }
-    
+     */
     
 }
 
@@ -376,10 +375,9 @@
 
 /* > PC low resolution  */
 @media (min-width: 1024px) and (max-width: 1239px) {
-    .wide{
+    /* .wide{
         width: 984px;
-    
-    }
+    } */
 
     .wide .row{
         margin-left: -12px;

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import styles from "./form.module.css";
 import { FaPlusCircle } from "react-icons/fa";
@@ -9,6 +8,7 @@ import { Input, Button } from "components";
 import categoryThunks from "store/categories/categoryThunks";
 import {
   formatCategoryName,
+  getFieldError,
   getFormData,
   showErrorMessageAlert,
 } from "utils/services";
@@ -18,24 +18,25 @@ function AddCategoryForm({
   categories,
   currentCategory,
   currentCategoriesId,
-  setCurrentCategoriesI,
 }) {
   const [wasSubmitted, setWasSubmitted] = useState(false);
   const { handleCloseModal } = useModal();
   const dispatch = useDispatch();
 
-  //Handle submit 
+  //Handle submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { name } = getFormData(e);
+    const formData = getFormData(e);
     const formIsValid =
-      categories.length > 0
-        ? categories?.every((value) => value.name !== name)
-        : true;
+      Object.values(formData).every((value) => !getFieldError(value)) &&
+      (!currentCategoriesId
+        ? categories?.every((value) => value.name !== formData.name)
+        : true);
+
     setWasSubmitted(true);
     if (formIsValid) {
       const data = {
-        name: formatCategoryName(name.trim()),
+        name: formatCategoryName(formData.name.trim()),
       };
       if (currentCategoriesId) {
         dispatch(
@@ -51,14 +52,14 @@ function AddCategoryForm({
             createdBy: auth?.result?.fullName,
           })
         );
-        e.currentTarget.reset();
-        setWasSubmitted(false);
       }
+      e.currentTarget.reset();
+      setWasSubmitted(false);
     } else {
       showErrorMessageAlert(
         currentCategoriesId
           ? "Change something if you want"
-          : "Category already exist",
+          : "Please fill out all fields",
         dispatch
       );
     }
@@ -72,7 +73,7 @@ function AddCategoryForm({
     >
       <h1 className={styles.heading}>Create new category</h1>
       <Input
-        value={currentCategoriesId ? currentCategory.name : ""}
+        value={currentCategoriesId ? currentCategory.name : undefined}
         wasSubmitted={wasSubmitted}
         sx={{ margin: "12px 0" }}
         type="text"

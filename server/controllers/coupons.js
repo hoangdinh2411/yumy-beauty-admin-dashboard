@@ -13,9 +13,8 @@ const couponsController = {
     }
   },
   create: async (req, res) => {
-    const { id,name, code, percentage, startDate, endDate,createdBy } = req.body;
+    const { name, code, percentage, startDate, endDate, createdBy } = req.body;
     const newCoupon = new couponsMessage({
-      id,
       name,
       code,
       percentage,
@@ -26,6 +25,11 @@ const couponsController = {
     });
     try {
       //kiem tra bang id , neu co thi chung to da khoi tao
+      const existingCoupon = couponsMessage.find({ code });
+      if (existingCoupon)
+        return res.status(400).json({
+          message: { error: "The coupon already exists" },
+        });
       await newCoupon.save();
       res.status(201).json(newCoupon);
     } catch (error) {
@@ -34,8 +38,54 @@ const couponsController = {
         .json({ message: { error: "Something went wrong! Try again later" } });
     }
   },
-  update: (req, res) => {},
-  delete: (req, res) => {},
+  update: async (req, res) => {
+    const { id } = req.params;
+    const { name, code, percentage, updatedBy, startDate, endDate } = req.body;
+
+    try {
+      if (!mongoose.Types.ObjectId.isValid(id))
+        return res
+          .status(404)
+          .json({ message: { error: "Cannot update the coupon" } });
+
+      await couponsMessage.findByIdAndUpdate(
+        id,
+        {
+          _id: id,
+          name,
+          code,
+          percentage,
+          updatedBy,
+          startDate,
+          endDate,
+          updatedAt: new Date().toISOString(),
+        },
+        { new: true }
+      );
+      return res.status(201).json("Updated success");
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: { error: "Something went wrong! Try again later" } });
+    }
+  },
+  delete: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      if (!mongoose.Types.ObjectId.isValid(id))
+        return res
+          .status(404)
+          .json({ message: { error: "Cannot delete the coupon" } });
+
+      await couponsMessage.findByIdAndRemove(id);
+      return res.status(201).json("Delete success");
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: { error: "Something went wrong! Try again later" } });
+    }
+  },
 };
 
 export default couponsController;

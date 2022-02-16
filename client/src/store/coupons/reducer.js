@@ -7,13 +7,13 @@ const couponReducers = (state = initialState, { type, payload }) => {
       return payload;
     case actionTypes.ADD_COUPON:
       return [...state, payload];
-    // case actionTypes.UPDATE_CATEGORY:
-    //   const {name, updatedBy} = payload.newData
-    //   return state.map((item) =>
-    //     item._id === payload.id ? {...item, name, updatedBy} : item
-    //   );
-    // case actionTypes.DELETE_CATEGORY:
-    //   return state.filter((item) => item._id !== payload);
+    case actionTypes.UPDATE_COUPON:
+      const {name, code, updatedBy, startDate, endDate,percentage} = payload.newData;
+      return state.map((item) =>
+        item._id === payload.id ?{...item,name, code, updatedBy, startDate, endDate,percentage } : item
+      );
+    case actionTypes.DELETE_COUPON:
+      return state.filter((item) => item._id !== payload);
     default:
       return state;
   }

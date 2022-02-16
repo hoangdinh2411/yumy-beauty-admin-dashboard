@@ -35,7 +35,7 @@ const serviceController = {
           .json({ message: { error: "Cannot delete this service" } });
 
       await serviceMessage.findByIdAndRemove(id);
-      res.json({ message: { success: "delete success" } });
+      res.json("delete success");
     } catch (error) {
       res
         .status(500)
@@ -56,7 +56,7 @@ const serviceController = {
         { ...service, _id: id, updatedAt: new Date().toISOString() },
         { new: true }
       );
-      res.json({ message: { success: "Update success" } });
+      res.json( "Update success");
     } catch (error) {
       res
         .status(500)

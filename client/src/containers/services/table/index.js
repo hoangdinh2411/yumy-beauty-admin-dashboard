@@ -1,39 +1,51 @@
 import React from "react";
-import styles from "./table.module.css";
 import { tableHeadersServices } from "constants";
 import Column from "./column";
 import { useSelector } from "react-redux";
 function ServicesTable({ services }) {
   const categories = useSelector((state) => state.categories);
-
+  const staffs = useSelector((state) => state.staffs);
   return (
-    <div className={styles.container}>
-      <table className={styles.table}>
-        <thead className={styles.header}>
-          <tr>
-            {tableHeadersServices.map((item, index) => {
-              return (
-                <th key={index} className={styles.text}>
-                  {item}
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {services?.map((item) => {
-            const category = categories.find(
-              (category) => category._id === item.category
-            );
+    <table className="table">
+      <thead className="table__header">
+        <tr>
+          {tableHeadersServices.map((item, index) => {
             return (
-              <tr key={item._id} className={styles.content}>
-                <Column item={item} category={category} />
-              </tr>
+              <th key={index} className="table__text">
+                {item}
+              </th>
             );
           })}
-        </tbody>
-      </table>
-    </div>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {services?.map((service) => {
+          const category = categories.find(
+            (category) => category._id === service.category
+          );
+          const staffsForService = staffs.filter((staff) => {
+            for (let j = 0; j < service?.staffs.length; j++) {
+              if (service?.staffs[j] === staff._id) {
+                return true;
+              }
+            }
+          });
+
+          return (
+            <tr key={service._id} className="table__content">
+              <Column
+                item={service}
+                category={category}
+                staffsForService={staffsForService}
+              />
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 }
 

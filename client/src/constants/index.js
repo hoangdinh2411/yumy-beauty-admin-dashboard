@@ -32,14 +32,10 @@ export const menuItems = [
   },
   {
     id: 7,
-    path: "/staff",
-    title: "Staff",
+    path: "/staffs",
+    title: "Staffs",
   },
-  {
-    id: 8,
-    path: "/setting",
-    title: "Setting",
-  },
+  
 ];
 
 export const formFields = {
@@ -48,9 +44,9 @@ export const formFields = {
       id: 1,
       name: "username",
       type: "text",
-      title: "Username ",
-
-    },
+      title: "Username",
+      defaultValue: 'admin'
+    },  
     {
       id: 2,
       name: "password",
@@ -58,7 +54,8 @@ export const formFields = {
         hide: "password",
         show: "text",
       },
-      title: "Password ",
+      title: "Password",
+      defaultValue: '123123',
       icon: {
         hide: <FaEyeSlash />,
         show: <FaEye />,
@@ -107,7 +104,8 @@ export const formFields = {
  
 };
 
-export const tableHeadersServices =["Image","Name","Categories","Price","Time to Up", "Staff", "Created by","","",""];
-export const tableHeadersCoupons =["Id","Campaign's Name","Code","Percentage","Start date", "End Date", "Created by","Expired","",""];
+export const tableHeadersServices =["Image","Name","Categories","Price","Time to Up", "Staff","","",""];
+export const tableHeadersStaffs =["Avatar","Full Name","Categories", "Phone","","",""];
+export const tableHeadersCoupons =["Coupon Code","Campaign's Name","Percentage","Start date", "End Date","Expired","",""];
 export const tableHeadersCategories =["Name","Created by","Updated by","","",""]
 

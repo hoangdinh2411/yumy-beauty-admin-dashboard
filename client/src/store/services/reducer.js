@@ -37,6 +37,11 @@ const servicesReducer = (state = initialState, { type, payload }) => {
             }
           : service;
       });
+
+      case actionTypes.UPDATE_SERVICE_BY_STAFF :
+        return state.forEach((service) => {
+          return service.staffs.filter( staff=>staff !== payload)
+        });
     default:
       return state;
   }

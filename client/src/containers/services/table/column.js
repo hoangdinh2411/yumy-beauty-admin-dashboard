@@ -3,9 +3,8 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import servicesThunks from "store/services/servicesThunks";
-import styles from "./column.module.css";
 
-function Column({ item ,category}) {
+function Column({ item, category, staffsForService }) {
   const dispatch = useDispatch();
   const { setCurrentServiceId } = useServicesContext();
   const handleEditService = (e) => {
@@ -14,44 +13,38 @@ function Column({ item ,category}) {
   };
 
   const handleDeleteService = (e) => {
-    if(window.confirm("Are you sure?") === true){
+    if (window.confirm("Are you sure?") === true) {
       const id = e.target.dataset.id;
       dispatch(servicesThunks.deleteService(id));
     }
-    
   };
   return (
     <>
-      <td className={styles.items}>
-        <img className={styles.image} src={item.selectedFile} alt=""></img>
+      <td className="table__column--items">
+        <img className="table__column--image " src={item.selectedFile} alt=""></img>
       </td>
-      <td className={styles.items}>
-        <span className={styles.text}>{item.name}</span>
+      <td className="table__column--items">
+        <span className="table__column--text ">{item.name}</span>
       </td>
-      <td className={styles.items}>
-        <span className={styles.text}>{category?.name}</span>
+      <td className="table__column--items">
+        <span className="table__column--text ">{category?.name}</span>
       </td>
-      <td className={styles.items}>
-        <span className={styles.text}>{item.price} kr</span>
+      <td className="table__column--items">
+        <span className="table__column--text ">{item.price} kr</span>
       </td>
-      <td className={styles.items}>
-        <span className={styles.text}>{item.timeTake} minutes</span>
+      <td className="table__column--items">
+        <span className="table__column--text ">{item.timeTake} minutes</span>
       </td>
-      <td className={styles.items}>
-        {item?.staffs?.length > 0
-          ? item?.staffs?.map((staff) => (
-              <>
-                <p className={styles.staffs}>{"$" + staff.toUpperCase()} </p>
-              </>
-            ))
-          : "Nobody"}
-      </td>
-      <td className={styles.items}>
-        <span className={styles.text}>{item.createdBy}</span>
+      <td className="table__column--items">
+        <ul className="table__column--list">
+          {staffsForService?.map((staff) => (
+              <li key={staff._id} className="table__column--selectedItems ">{staff.fullName}</li>
+          ))}
+        </ul>
       </td>
       <td>
         <span
-          className={styles.button}
+          className="table__column--button"
           title="Edit service"
           data-id={item._id}
           onClick={(e) => handleEditService(e)}
@@ -61,7 +54,7 @@ function Column({ item ,category}) {
       </td>
       <td>
         <span
-          className={styles.button}
+          className="table__column--button"
           title="Delete service"
           data-id={item._id}
           onClick={(e) => handleDeleteService(e)}
@@ -72,7 +65,7 @@ function Column({ item ,category}) {
       <td>
         <Link
           to={`/services/${item._id}`}
-          className={styles.button}
+          className="table__column--button"
           title="Info about the service"
           data-id={item._id}
         >

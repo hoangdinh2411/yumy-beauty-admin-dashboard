@@ -8,6 +8,7 @@ import userRouter from './route/user.js'
 import serviceRoute from './route/service.js'
 import categoryRoute from './route/category.js'
 import couponsRoute from './route/coupons.js'
+import staffsRoute from './route/staffs.js'
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use('/users', userRouter)
 app.use('/services', serviceRoute)
 app.use('/category', categoryRoute)
 app.use('/coupons', couponsRoute)
+app.use('/staffs', staffsRoute)
 
 const PORT = process.env.PORT || 5001;
 

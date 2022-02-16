@@ -52,7 +52,7 @@ const categoryController = {
         { new: true }
       );
 
-      res.status(201).json({ message: { success: "update success" } });
+      res.status(201).json("update success" );
     } catch (error) {
       res
         .status(500)
@@ -75,7 +75,7 @@ const categoryController = {
         });
       await services.deleteMany()
       await categoryMessage.findByIdAndRemove(id);
-      res.status(201).json("Deleted");
+      res.status(201).json("Delete success");
     } catch (error) {
       res
         .status(500)

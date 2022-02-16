@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./input.module.css";
 import { getFieldError } from "utils/services";
 
@@ -20,29 +20,34 @@ function Input({
   const [touched, setTouched] = useState(false);
   const errorMessage = getFieldError(inputValue, title);
   const displayErrorMessage = (wasSubmitted || touched) && errorMessage;
+
   return (
-    <div key={name} className={styles.boxes} style={sx}>
+    <div key={name} className={styles.boxes}>
       <label htmlFor={`${name}-input`} className={styles.title}>
         {title}
       </label>
 
       <input
-        value={name==="search" ? value  : inputValue}
+        style={sx}
+        value={value ? (handleChange? value : inputValue) : undefined}
         id={`${name}-input`}
         name={name}
         type={type}
         onChange={(e) =>
-          type === "search"
+          handleChange
             ? handleChange(e)
             : setInputValue(e.currentTarget.value)
         }
         onBlur={type === "search" ? () => {} : (e) => setTouched(true)}
-        className={styles.input}
+        className={`${styles.input} ${value && value=== inputValue ? styles.active: ""}`}
         required={type === "search" ? false : true}
         placeholder={placeholder}
         aria-describedby={displayErrorMessage ? `${name}-error` : undefined}
       />
-      <span className={styles.icon} onClick={handleShowPass}>
+      <span
+        className={styles.icon}
+        onClick={type === "password" ? handleShowPass : () => {}}
+      >
         {icon}
       </span>
       {/* Neu co error,  thi hien ra dong thong bao error 

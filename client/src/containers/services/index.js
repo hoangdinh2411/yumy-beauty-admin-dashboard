@@ -30,11 +30,13 @@ function Services() {
 
   return (
     <ServicesProvider value={{ currentServiceId, setCurrentServiceId }}>
-      <h3>{location.state}</h3>
-
-      <AddService auth={auth} currentService={currentService} />
-      {/* <UploadCsvFileForm /> */}
-      <ServicesTable services={services} />
+      <div className="wrapper__heading">
+        <h3 className="pageTitle">{location.state}</h3>
+        <AddService auth={auth} currentService={currentService} />
+      </div>
+      <div className="content table">
+        <ServicesTable services={services} />
+      </div>
     </ServicesProvider>
   );
 }

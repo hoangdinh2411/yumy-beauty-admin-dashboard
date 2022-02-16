@@ -2,20 +2,19 @@ import React from "react";
 import { Link , NavLink,useNavigate} from "react-router-dom";
 import { menuItems } from "constants";
 import styles from "./navbar.module.css";
-import Button from "components/button";
+import Button from "components/button/Button";
 import { useDispatch } from 'react-redux';
-import authThunks from "store/user/authThunks";
+import { signOut } from "utils/services";
 
 function Navbar() {
   const dispatch = useDispatch()
   const navigate = useNavigate();
   
   const handleSignOut =()=>{
-    dispatch(authThunks.signOut(dispatch, navigate));
-
+    signOut(dispatch,navigate)
   }
   return (
-    <div className={`${styles.navbar} glass-blur`}>
+    <div className={`${styles.navbar} glass-primary`}>
       <div className={styles.logo}>
         <Link className={styles.logoLink} to="/">
           Logo

@@ -3,9 +3,13 @@ import styles from "./dashboard.module.css";
 // import {}
 function Dashboard() {
   return (
-    <div className={styles.wrapper}>   
-    <h1>Dashboard</h1>
-    </div>
+    <>
+      <div className="wrapper__heading">
+        <h3 className="pageTitle">Dashboard</h3>
+      </div>
+      <div className="table__wrapper ">
+      </div>
+    </>
   );
 }
 

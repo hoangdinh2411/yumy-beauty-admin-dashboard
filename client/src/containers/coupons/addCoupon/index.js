@@ -1,38 +1,53 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Button, Select, Input } from "components";
-import styles from "./addCoupon.module.css";
+import { Button, Input } from "components";
+
 import useModal from "hooks/modalHook";
 import AddCouponsForm from "./forms/addCouponsForm";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import filterActions from "store/filter/actions";
-import useCategoriesContext from "hooks/categoriesHook copy";
+import useCouponsContext from "hooks/couponsHook";
 
-const searchStyle = { marginRight: "12px" };
+const searchStyle = { marginRight: "12px", marginTop:'12px' };
 function AddCoupons({ auth }) {
+  const { currentCouponId, setCurrentCouponId } = useCouponsContext();
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
-  const { handleShowModal, handleCloseModal } = useModal();
-  // const handleSearchText = useCallback((e) => {
-  //   setSearchValue(e.target.value);
-  //   dispatch(filterActions.search(e.target.value));
-  // }, []);
+  const { handleShowModal, modalStatus } = useModal();
+  const coupons = useSelector((state) => state.coupons);
+  const currentCoupon = currentCouponId
+    ? coupons.find((item) => item._id === currentCouponId)
+    : null;
 
-  // useEffect(() => {
-  //   if (!currentCategoriesId) return;
-  //   handleShowModal(
-  //     <AddCouponsForm
-  //       categories={categories}
-  //       auth={auth}
-  //     />
-  //   );
-  //   return () => {};
-  // }, [currentCategoriesId]);
+  const handleSearchText = useCallback((e) => {
+    setSearchValue(e.target.value);
+    dispatch(filterActions.search(e.target.value));
+  }, []);
+
+
+  useEffect(() => {
+    if (!currentCouponId) return;
+
+    if (!modalStatus.showModal) {
+      setCurrentCouponId(null);
+    }
+
+    handleShowModal(
+      <AddCouponsForm
+        currentCouponId={currentCouponId}
+        currentCoupon={currentCoupon}
+        auth={auth}
+      />
+    );
+   
+    return () => {};
+  }, [currentCouponId, modalStatus]);
+
   return (
-    <div className={styles.form}>
+    <div className="searchBar">
       <Input
         sx={searchStyle}
         value={searchValue}
-        // handleChange={handleSearchText}
+        handleChange={handleSearchText}
         name="search"
         type="search"
         id="searchCoupon"
@@ -40,7 +55,7 @@ function AddCoupons({ auth }) {
       />
       <Button
         sx={{ marginRight: "12px" }}
-        handleClick={() => handleShowModal(<AddCouponsForm auth={auth} />)}
+        handleClick={() => handleShowModal(<AddCouponsForm  auth={auth} />)}
       >
         Add Coupon
       </Button>

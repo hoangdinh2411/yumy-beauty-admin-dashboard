@@ -1,8 +1,12 @@
+.wrapper{
+    display: flex;
+    height: 100%;
+}
 .form{
     border-radius: 6px;
     width: 350px;
-    padding: 10px 20px;
     margin: auto;
+    padding: 10px 20px;
     box-shadow: 0 5px 10px var(--text-color);
 }
 .heading{

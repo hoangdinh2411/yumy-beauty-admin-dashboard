@@ -9,7 +9,6 @@ function MessageBox({ show, messageFromServer }) {
     // lay ra message 
     message = messageFromServer[type];
   }
-
   if (!show ) {
     return <></>;
   }

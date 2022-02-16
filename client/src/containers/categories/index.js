@@ -14,7 +14,7 @@ function Categories() {
   const { modalStatus } = useModal();
   const auth = JSON.parse(localStorage.getItem("authInfo"));
   const categoriesFilter = useSelector(categoriesRemainingSelector);
-  const categories = useSelector(state=>state.categories);
+  const categories = useSelector((state) => state.categories);
   const currentCategory = currentCategoriesId
     ? categories.find((item) => item._id === currentCategoriesId)
     : null;
@@ -26,17 +26,20 @@ function Categories() {
     }
     return () => {};
   }, [currentCategoriesId]);
-  
+
   return (
     <CategoriesProvider value={{ currentCategoriesId, setCurrentCategoriesId }}>
-      <h3>{location.state}</h3>
-      <AddCategory
-        auth={auth}
-        categories={categories}
-        currentCategory={currentCategory}
-      />
-      {/* <UploadCsvFileForm /> */}
-      <CategoriesTable categoriesFilter={categoriesFilter} />
+        <div className="wrapper__heading">
+          <h3 className="pageTitle">{location.state}</h3>
+          <AddCategory
+            auth={auth}
+            categories={categories}
+            currentCategory={currentCategory}
+          />
+        </div>
+        <div className="content table">
+          <CategoriesTable categoriesFilter={categoriesFilter} />
+        </div>
     </CategoriesProvider>
   );
 }

@@ -1,19 +1,18 @@
 import React from "react";
-import styles from "./table.module.css";
 import { tableHeadersCoupons } from "constants";
 import Column from "./column";
 import { useSelector } from "react-redux";
-function CategoriesTable() {
-  const coupons = useSelector((state) => state.coupons);
+import { couponsRemainingSelector } from "store/selector";
+function CouponsTable() {
+  const coupons = useSelector(couponsRemainingSelector);
   return (
-    <div className={styles.container}>
-      <table className={styles.table}>
-        <thead className={styles.header}>
+      <table className="table">
+        <thead className="table__header">
           <tr>
             {tableHeadersCoupons.map((item, index) => {
               return (
                 <th key={index}>
-                  <p  className={styles.text}>{item}</p>
+                  <p  className="table__text">{item}</p>
                 </th>
               );
             })}
@@ -24,15 +23,14 @@ function CategoriesTable() {
         <tbody>
           {coupons?.map((item) => {
             return (
-              <tr key={item._id} className={styles.content}>
+              <tr key={item._id} className="table__content">
                 <Column item={item} />
               </tr>
             );
           })}
         </tbody>
       </table>
-    </div>
   );
 }
 
-export default React.memo(CategoriesTable);
+export default React.memo(CouponsTable);
