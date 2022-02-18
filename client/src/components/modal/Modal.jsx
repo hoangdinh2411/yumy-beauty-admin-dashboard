@@ -13,7 +13,7 @@ function Modal({modalStatus,  children ,setModalStatus}) {
     return null
   }
   return (
-    <div className={`${styles.main} glass-primary`} style={modalStatus.showModal ? {display:'flex'} : {display:'none'} }>
+    <div className={`${styles.main} `} style={modalStatus.showModal ? {display:'flex'} : {display:'none'} }>
       <div className={styles.overlay} title="Close Modal" onClick={handleCloseModal}></div>
       <div className={styles.body}>{children}</div>
     </div>

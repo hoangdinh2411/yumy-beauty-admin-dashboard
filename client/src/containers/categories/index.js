@@ -8,8 +8,8 @@ import { useLocation } from "react-router-dom";
 import { categoriesRemainingSelector } from "store/selector";
 
 function Categories() {
-  const location = useLocation();
 
+  const location = useLocation();
   const [currentCategoriesId, setCurrentCategoriesId] = useState(null);
   const { modalStatus } = useModal();
   const auth = JSON.parse(localStorage.getItem("authInfo"));

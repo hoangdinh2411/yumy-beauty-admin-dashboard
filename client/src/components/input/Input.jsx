@@ -15,12 +15,12 @@ function Input({
   handleChange,
   underline,
   value,
+  disabled,
 }) {
   const [inputValue, setInputValue] = useState(value);
   const [touched, setTouched] = useState(false);
   const errorMessage = getFieldError(inputValue, title);
   const displayErrorMessage = (wasSubmitted || touched) && errorMessage;
-
   return (
     <div key={name} className={styles.boxes}>
       <label htmlFor={`${name}-input`} className={styles.title}>
@@ -28,18 +28,17 @@ function Input({
       </label>
 
       <input
+        disabled={disabled}
         style={sx}
-        value={value ? (handleChange? value : inputValue) : undefined}
+        value={value ? (handleChange ? value : inputValue) : undefined}
         id={`${name}-input`}
         name={name}
         type={type}
         onChange={(e) =>
-          handleChange
-            ? handleChange(e)
-            : setInputValue(e.currentTarget.value)
+          handleChange ? handleChange(e) : setInputValue(e.currentTarget.value)
         }
         onBlur={type === "search" ? () => {} : (e) => setTouched(true)}
-        className={`${styles.input} ${value && value=== inputValue ? styles.active: ""}`}
+        className={`${styles.input}`}
         required={type === "search" ? false : true}
         placeholder={placeholder}
         aria-describedby={displayErrorMessage ? `${name}-error` : undefined}

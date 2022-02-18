@@ -8,5 +8,9 @@ const authAPI = {
   adminSignIn: async (data) => {
     return await axiosClient.post(url+'/signin', data);
   },
+  updateProfile : async(id,newData) =>{
+    return await axiosClient.patch(`${url}/${id}`,newData)
+  }
+
 };
 export default authAPI;

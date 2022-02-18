@@ -37,10 +37,9 @@
   height: 100%;
   min-height: 40px;
   padding: 6px 22px 6px 6px;
-  background-color: white;
   color: var(--text-color);
   font-size: 16px;
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2) inset, 0 3px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 3px 0px rgba(0, 0, 0, 0.2) inset, 0 3px 12px rgba(0, 0, 0, 0.3);
 }
 .input:focus {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2) inset;
@@ -49,9 +48,21 @@
   width: 100%;
 }
 
-.input.active{
+.input:disabled{
+  cursor: no-drop;
+  background-color: rgba(0, 0, 0, 0.02);
+
+}
+/* When input have value  */
+
+.input:valid{
   background-color: rgba(0, 0, 0, 0.02);
 }
+/* when input focus on and changing value  */
+.input:focus-within{
+  background-color: white;
+}
+
 .line {
   transition: width 0.2s linear;
   z-index: 10;

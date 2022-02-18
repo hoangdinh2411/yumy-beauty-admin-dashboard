@@ -1,29 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./avatar.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaSignOutAlt, FaEdit } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { signOut } from "utils/services";
-
+import useAuth from 'hooks/useAuth';
+import { signOut } from "utils/authServices";
 function UserAvatar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("authInfo"));
-
+  const auth = useAuth()
   const handleSignOut = () => {
     signOut(dispatch, navigate);
   };
   return (
     <div className={styles.wrapper}>
-      {user.result?.avatarURL ? (
+      {auth?.result?.avatar ? (
         <img
-          src={user.result?.avatarURL}
+          src={auth?.result?.avatar}
           className={styles.avatar}
           alt="Avatar"
         />
       ) : (
         <p className={styles.avatarByCharacter}>
-          {user.result?.fullName.charAt(0).toUpperCase()}
+          {auth?.result?.fullName.charAt(0).toUpperCase()}
         </p>
       )}
       <ul className={styles.subMenu}>

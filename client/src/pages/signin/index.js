@@ -2,11 +2,11 @@ import { useState } from "react";
 import styles from "./signinPage.module.css";
 import { Input, Button } from "components";
 import { formFields } from "constants";
-import authThunks from "store/user/authThunks";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getFieldError, getFormData } from "utils/services";
 import { showErrorMessageAlert } from "utils/services";
+import { signInByUserName, signUp } from "utils/authServices";
 
 function Signin() {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -29,9 +29,9 @@ function Signin() {
     setWasSubmitted(true);
     if (formIsValid) {
       if (isSignIn) {
-        dispatch(authThunks.signInByUserName(formData, navigate));
+        signInByUserName(formData, dispatch, navigate);
       } else {
-        dispatch(authThunks.signUp(formData, navigate));
+        signUp(formData, dispatch, navigate);
       }
     } else {
       showErrorMessageAlert("Please fill out all fields", dispatch);

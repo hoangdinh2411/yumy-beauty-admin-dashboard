@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { ModalContext } from "context/modalContext";
 
-const useModal = () => {
+const useModal = (...props) => {
   const { modalStatus, setModalStatus } = useContext(ModalContext);
 
   const handleShowModal = (children) => {

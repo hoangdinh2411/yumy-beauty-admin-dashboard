@@ -4,9 +4,9 @@ const userSchema = mongoose.Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
   fullName: { type: String, required: true },
-  //File khong can required
-  // selectedFile: String,
   email: { type: String, required: true },
+  avatar: String,
+  phone : Number
 });
 
 const userMessage = mongoose.model("UserMessage", userSchema);

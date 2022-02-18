@@ -4,7 +4,7 @@ import { menuItems } from "constants";
 import styles from "./navbar.module.css";
 import Button from "components/button/Button";
 import { useDispatch } from 'react-redux';
-import { signOut } from "utils/services";
+import { signOut } from "utils/authServices";
 
 function Navbar() {
   const dispatch = useDispatch()

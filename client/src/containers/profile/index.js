@@ -3,107 +3,139 @@ import { useLocation } from "react-router-dom";
 import FileBase from "react-file-base64";
 import { Button, Input } from "components";
 import styles from "./profile.module.css";
-import RouterPrompt from "hooks/routerPrompt";
+import useAuth from "hooks/useAuth";
+import { updateProfile } from "utils/authServices";
+import { useDispatch } from "react-redux";
+
 const profileInputStyle = {
   width: 600,
   marginBottom: 50,
 };
-function Profile({auth}) {
+function Profile() {
   const location = useLocation();
-  const userInfo = auth?.result;
-  const [wasSubmitted, setWasSubmitted] = useState(false);
-  const [avatar, setAvatar] = useState("");
+  const dispatch = useDispatch();
+  const auth = useAuth();
+  const user = auth?.result;
+  const [formChanged, setFormChanged] = useState(false);
+  const [selectedFile, setSelectedFile] = useState("");
   const [fields, setFields] = useState({
-    username: userInfo?.username,
-    fullName: userInfo?.fullName,
-    phone: userInfo?.phone,
-    email: userInfo?.email,
+    fullName: user?.fullName,
+    phone: user?.phone,
+    email: user?.email,
   });
+  const keys = Object.keys(fields);
 
+  // If user reset page with unsaved changes, it shows up a message
   const handleChange = (e) => {
     const field = e.target.name;
+    // if the value that user entered isn't the same user info on data, that mean the form was changed
     setFields({
+      ...fields,
       [field]: e.target.value,
     });
   };
 
-  RouterPrompt({
-    when:
-      fields.username !== userInfo?.username ||
-      fields.fullName !== userInfo?.fullName ||
-      fields.phone !== userInfo?.phone ||
-      fields.email !== userInfo?.email ||
-      avatar !== "",
+  useEffect(() => {
+    let result;
+    result = keys.some((key) => {
+      return fields[key] !== user[key];
+    });
+    setFormChanged(result);
 
-    message: "Are you sure you want to leave? "  
-  });
+    if (selectedFile) {
+      setFormChanged(true);
+    }
+  }, [fields, selectedFile]);
 
   const handleSelectAvatar = ({ base64 }) => {
-    setAvatar(base64);
+    setSelectedFile(base64);
   };
 
   const handleEditProfile = (e) => {
     e.preventDefault();
+
+    if (!formChanged) return;
+    let newData;
+
+    if (user?.avatar && !selectedFile) {
+      //If there is user avatar and user doesn't select any file, get user existed avatar
+      newData = {
+        ...auth?.result,
+        ...fields,
+      };
+    } else {
+
+      //If there isn't user avatar , get picture from selected file, it can be a empty string or a string
+        newData = {
+          ...auth?.result,
+          ...fields,
+          avatar: selectedFile,
+        };
+    }
+    updateProfile(auth?.result?._id, newData, dispatch);
   };
+
   return (
     <>
       <div className="wrapper__heading">
         <h3 className="pageTitle">{location.state}</h3>
       </div>
-      <form
-        noValidate
-        onSubmit={handleEditProfile}
-        className="content profile "
-      >
+      <form noValidate className="content profile ">
         <div className={styles.avatarContainer}>
-          <img src={auth?.result?.avatar} className={styles.avatar} alt="" />
+          {user?.avatar ? (
+            <img src={user?.avatar} className={styles.avatar} alt="" />
+          ) : selectedFile ? (
+            <img src={selectedFile} className={styles.avatar} alt="" />
+          ) : (
+            <p className={styles.avatar}>
+              {user?.fullName.charAt(0).toUpperCase()}
+            </p>
+          )}
+
           <FileBase type="file" multiple={false} onDone={handleSelectAvatar} />
         </div>
-
         <Input
           type="text"
-          showErrorMessage
-          wasSubmitted={wasSubmitted}
           name="fullName"
           handleChange={handleChange}
-          value={fields.fullName || ""}
+          value={fields.fullName}
           sx={profileInputStyle}
           title="Full Name"
         />
         <Input
           type="text"
-          showErrorMessage
-          wasSubmitted={wasSubmitted}
           name="username"
           handleChange={handleChange}
-          value={fields.username || ""}
+          value={user?.username}
           sx={profileInputStyle}
           title="Username"
+          disabled
         />
         <Input
           type="phone"
-          showErrorMessage
-          wasSubmitted={wasSubmitted}
           name="phone"
           handleChange={handleChange}
-          value={fields.phone || ""}
+          value={fields.phone}
           sx={profileInputStyle}
           title="Phone"
         />
         <Input
           type="email"
-          showErrorMessage
-          wasSubmitted={wasSubmitted}
           name="email"
           handleChange={handleChange}
-          value={fields.email || ""}
+          value={fields.email}
           sx={profileInputStyle}
           title="Email"
         />
       </form>
       <div className={styles.buttons}>
         <span></span>
-        <Button>Edit</Button>
+        <Button
+          handleClick={handleEditProfile}
+          disable={formChanged ? false : true}
+        >
+          Edit
+        </Button>
       </div>
     </>
   );

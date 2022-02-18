@@ -1,5 +1,4 @@
 import messageAction from "store/message/actions";
-import authThunks from "store/user/authThunks";
 
 export const formatCategoryName = (textInput) => {
   const text = textInput.toLowerCase();
@@ -38,20 +37,16 @@ export const createCodeForCoupon = (name, startDate, percentage) => {
   //lay ra chu cai dau cua campaign name
 
   const nameCharacters = name
-    .split(" ").slice(0, 3)
+    .split(" ")
+    .slice(0, 3)
     .map((item) => item.charAt(0).toUpperCase())
     .join("");
 
   //lay ra 2 so cuoi cua code
-  const yearNumber = startDate.getFullYear()
+  const yearNumber = startDate.getFullYear();
 
   // la 1 chuoi gom so phan tram + chu cai dau cua campaign name + 2 so cuoi cua code
   const id = percentage + nameCharacters + yearNumber;
   return id;
 };
 
-
-
-export const signOut =(dispatch, navigate)=>{
-  dispatch(authThunks.signOut(dispatch,navigate));
-}
