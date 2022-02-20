@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
 const userController = {
+ 
   signin: async (req, res) => {
     const { username, password } = req.body;
     try {
@@ -79,7 +80,7 @@ const userController = {
   },
 
   updateProfile: async (req, res) => {
-    const {id:_id} = req.params;
+    const { id: _id } = req.params;
     const newData = req.body;
 
     try {
@@ -100,6 +101,45 @@ const userController = {
       });
     }
   },
+ 
+  resetPassword: async (req, res) => {
+    const { email, oldPassword, newPassword } = req.body;
+    try {
+      // find existed user
+      const existingUser = await userMessage.findOne({ email });
+      if (!existingUser)
+        return res.status(404).json({
+          message: { error: "User with given email doesn't exist" },
+        });
+      // compare old password that user entered with the  saved password on data
+      const isOldPasswordCorrect = await bcryptjs.compare(
+        oldPassword,
+        existingUser.password
+      );
+
+      if (!isOldPasswordCorrect)
+        return res
+          .status(400)
+          .json({ message: { error: "Old password was incorrect" } });
+
+      //hash new password
+      const hashedNewPassword = await bcryptjs.hash(newPassword, 12);
+
+      //save new password
+      existingUser.password = hashedNewPassword;
+      await existingUser.save();
+      res.status(201).json({
+        username: existingUser.username,
+        password: newPassword,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: { error: "Something went wrong! Try again later. " },
+      });
+    }
+  },
+
+
 };
 
 export default userController;

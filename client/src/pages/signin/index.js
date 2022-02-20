@@ -3,10 +3,16 @@ import styles from "./signinPage.module.css";
 import { Input, Button } from "components";
 import { formFields } from "constants";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useLocation} from "react-router-dom";
 import { getFieldError, getFormData } from "utils/services";
 import { showErrorMessageAlert } from "utils/services";
-import { signInByUserName, signUp } from "utils/authServices";
+import {
+  sendEmailToCustom,
+  signInByUserName,
+  signUp,
+} from "utils/authServices";
+
+const styleForInput = { marginBottom: "10px" };
 
 function Signin() {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -14,11 +20,8 @@ function Signin() {
   const [sendEmail, setSendEmail] = useState(false);
   const [wasSubmitted, setWasSubmitted] = useState(false);
   const navigate = useNavigate();
-
+  const {state} = useLocation()
   const dispatch = useDispatch();
-  // const handleChange = (e) => {
-  //   setValue({ ...formData, [e.target.name]: e.target.value });
-  // };
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = getFormData(e);
@@ -28,12 +31,18 @@ function Signin() {
     );
     setWasSubmitted(true);
     if (formIsValid) {
-      if (isSignIn) {
-        signInByUserName(formData, dispatch, navigate);
+      if (!sendEmail) {
+        if (isSignIn) {
+          signInByUserName(formData, dispatch, navigate);
+        } else {
+          signUp(formData, dispatch, navigate);
+        }
       } else {
-        signUp(formData, dispatch, navigate);
+        sendEmailToCustom(formData.email,dispatch);
       }
-    } else {
+      e.currentTarget.reset();
+    }
+    else {
       showErrorMessageAlert("Please fill out all fields", dispatch);
     }
   };
@@ -90,6 +99,8 @@ function Signin() {
           (sendEmail && (
             <>
               <Input
+                sx={styleForInput}
+                showErrorMessage
                 wasSubmitted={wasSubmitted}
                 // value={formData.email}
                 name="email"
@@ -105,14 +116,15 @@ function Signin() {
                 {formFields.signInForm.map((field) => {
                   return (
                     <Input
-                      value={field.defaultValue}
+                      sx={styleForInput}
+                      showErrorMessage
+                      value={state ? state[field.name] : undefined}
                       wasSubmitted={wasSubmitted}
                       id={field.name}
                       handleShowPass={
                         field.name === "password" ? handleShowPass : null
                       }
                       key={field.id}
-                      // value={formData[field.name] || ""}
                       icon={
                         field.name === "password"
                           ? field.icon[showPass ? "show" : "hide"]
@@ -134,13 +146,13 @@ function Signin() {
                 {formFields.signUpForm.map((field) => {
                   return (
                     <Input
+                      sx={styleForInput}
                       wasSubmitted={wasSubmitted}
                       id={field.name}
                       handleShowPass={
                         field.name === "password" ? handleShowPass : null
                       }
                       key={field.id}
-                      // value={formData[field.name] || ""}
                       icon={
                         field.name === "password"
                           ? field.icon[showPass ? "show" : "hide"]

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import PrivateRouter from "./privateRouter";
 
 const Signin = lazy(() => import("pages/signin"));
+const ResetPassword = lazy(() => import("pages/signin/resetPassword"));
 const HomeLayout = lazy(() => import("pages/home/homeLayout"));
 const Dashboard = lazy(() => import("containers/dashboard"));
 const Services = lazy(() => import("containers/services"));
@@ -33,6 +34,7 @@ function Routing() {
           <Route path="*" element={<h1>There is nothing here</h1>} />
         </Route>
         <Route path="/signin" element={<Signin />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
       </Routes>
     </Suspense>
   );
