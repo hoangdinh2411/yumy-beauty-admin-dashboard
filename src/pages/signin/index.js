@@ -146,7 +146,6 @@ function Signin() {
                 {formFields.signUpForm.map((field) => {
                   return (
                     <Input
-                      sx={styleForInput}
                       wasSubmitted={wasSubmitted}
                       id={field.name}
                       handleShowPass={
@@ -164,7 +163,7 @@ function Signin() {
                           ? field.type[showPass ? "show" : "hide"]
                           : field.type
                       }
-                      title={field.title}
+                      placeholder={field.title}
                     />
                   );
                 })}
