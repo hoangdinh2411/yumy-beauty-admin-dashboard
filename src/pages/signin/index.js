@@ -146,6 +146,7 @@ function Signin() {
                 {formFields.signUpForm.map((field) => {
                   return (
                     <Input
+                    sx={styleForInput}
                       wasSubmitted={wasSubmitted}
                       id={field.name}
                       handleShowPass={
