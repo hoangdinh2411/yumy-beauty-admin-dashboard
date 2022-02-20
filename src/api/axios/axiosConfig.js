@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: 'http://localhost:5000' || 'https://yumy-beauty-salon-server.herokuapp.com/',
+  baseURL: 'http://localhost:5000' || 'https://yumy-beauty-salon-server-app.herokuapp.com',
   timeout:10000,
   headers: {
     "content-type": "application/json",
