@@ -60,7 +60,7 @@ export const sendEmailToCustom = async (to_email, dispatch) => {
   const from_name = "Yumy Beauty Salong";
   const from_email = "hoangdinh2411@gmail.com";
   const link_to_reset_password =
-    "http://localhost:3000/resetpassword?email=" + to_email;
+    "https://yumy-salon-admin-dashboard.herokuapp.com/resetpassword?email=" + to_email;
 
   const template_params = {
     from_name,
